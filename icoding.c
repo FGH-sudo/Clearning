@@ -1,10 +1,8 @@
-/* Maintains a parts database (array version) */
-
 #include <stdio.h>
 #include <stdlib.h>
 
 #define NAME_LEN 25
-#define MAX_PARTS 100
+#define MAX_PARTS 50
 
 struct part {
   int number;
