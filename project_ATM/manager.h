@@ -1,9 +1,21 @@
+#ifndef MANAGER_H
+#define MANAGER_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #define TRUE 1
 #define FALSE 0
+
+#define ERRTIMES  3     //登录密码错误次数的上限
+#define NAMESIZE  10    //储户名数组大小
+#define DATESIZE  30    //操作时间数组大小
+#define BANKNAME  10    //银行名数组大小
+#define ADDRESSSIZE 20   //银行地址数组大小
+#define CARDSIZE   20   //银行卡初始容量
+
 typedef int bool;
 
 /*管理员状态*/
@@ -36,104 +48,15 @@ typedef struct
 } Manager_List;
 
 /*1.初始化业务*/
-void Init(Manager_List **mp)
-{
-    *mp = (Manager_List *)malloc(sizeof(Manager_List));
-    (*mp)->head = NULL;
-    (*mp)->m_quantity = 0;
-}
+void Init(Manager_List **mp);
 
 /*2.管理员注册业务*/
-bool m_register(Manager_List *mp)
-{
-    Node *p;
-    char a[21];
-    char b[9];
-    int choice;
-    if (mp->head == NULL)
-    {
-        p = (Node *)malloc(sizeof(Node));
-        while (1)
-        {
-            printf("请输入管理员账号（不超过20位）:");
-            scanf("%s", a);
-            if (strlen(a) > 20)
-            {
-                printf("id过长！\n");
-            }
-            else
-            {
-                strcpy(p->manager.m_id, a);
-                break;
-            }
-        }
-        while (1)
-        {
-            printf("请输入管理员密码（8位）:");
-            scanf("%s", b);
-            if (strlen(b) != 8)
-            {
-                printf("密码长度不符！\n");
-            }
-            else
-            {
-                strcpy(p->manager.m_passwd, b);
-                break;
-            }
-        }
-        printf("请输入管理员身份 (1 超级管理员 or 2 普通管理员):");
-        scanf("%d", &choice);
-        p->manager.identity = choice == 1 ? ROOT : MANAGER;
-        p->manager.m_islocked = FALSE;
-        mp->head = p;
-        p->next = NULL;
-        mp->m_quantity++;
-    }
-    else
-    {
-        Node *r;
-        r = mp->head;
-        while (r->next != NULL)
-        {
-            r = r->next;
-        }
-        p = (Node *)malloc(sizeof(Node));
-       while (1)
-        {
-            printf("请输入管理员账号（不超过20位）:");
-            scanf("%s", a);
-            if (strlen(a) > 20)
-            {
-                printf("id过长！\n");
-            }
-            else
-            {
-                strcpy(p->manager.m_id, a);
-                break;
-            }
-        }
-        while (1)
-        {
-            printf("请输入管理员密码（8位）:");
-            scanf("%s", b);
-            if (strlen(b) != 8)
-            {
-                printf("密码长度不符！\n");
-            }
-            else
-            {
-                strcpy(p->manager.m_passwd, b);
-                break;
-            }
-        }
-        printf("请输入管理员身份 (1 超级管理员 or 2 普通管理员):");
-        scanf("%d", &choice);
-        p->manager.identity = choice == 1 ? ROOT : MANAGER;
-        p->manager.m_islocked = FALSE;
-        r->next = p;
-        p->next = NULL;
-        mp->m_quantity++;
-    }
-    printf("注册成功!\n");
-    return TRUE;
-}
+bool M_Register(Manager_List *mp);
+
+/*3.管理员登录业务*/
+bool M_Login(Manager_List *mp,char *id,char *passwd);
+
+
+
+
+#endif
